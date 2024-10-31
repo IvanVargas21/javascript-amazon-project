@@ -46,7 +46,7 @@ products.forEach((product)=>{
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -64,7 +64,9 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
     button.addEventListener('click', ()=>{
         // kebab-case converted into camelCase
         //accesses the custom data-product-id attribute in each button
-        const productId = button.dataset.productId;
+
+        //Destructuring Applied
+        const {productId} = button.dataset;
         //we'll use productId we retrieved above, it was the productId associated to the buttont that we select.
         const productSelector = document.querySelector(`.js-quantity-selector-${productId}`)
         //check if the product is already in the cart
@@ -89,7 +91,8 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
             matchingItem.quantity += Number(itemQuantity);
         }else{
             cart.push({
-                productId:productId,
+                //Since productId is both the property name and the variable name, it can be use shorthand.
+                productId,
                 //convert it to number first
                 quantity: Number(itemQuantity),
             });
@@ -100,7 +103,32 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
                 cartQuantity += item.quantity;
             })
             document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-            console.log(cartQuantity);
+                    
+            
+            // An object to store timeout IDs for each product
+            const addedMessageTimeouts = {};
+            const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+            function addToCart(productId) {
+              // Add the class to show the message immediately
+              addedMessage.classList.add("added-to-cart-visible");
+
+              // Check if there's a previous timeout for this product and clear it
+              const previousTimeoutId = addedMessageTimeouts[productId];
+              if (previousTimeoutId) {
+                clearTimeout(previousTimeoutId);
+              }
+
+              // Set a new timeout to remove the class after 2 seconds
+              const timeoutId = setTimeout(() => {
+                addedMessage.classList.remove("added-to-cart-visible");
+              }, 2000);
+
+              // Save the new timeout ID for this product
+              addedMessageTimeouts[productId] = timeoutId;
+            }
+            
+            addToCart();
+            console.log(cartQuantity); 
             console.log(cart)
             
 
