@@ -1,5 +1,6 @@
 //Module 
 import {cart} from '../data/cart.js';
+import {products} from '../data/products.js';
 //Save the data
 //This is called DATA STRUCTURES - it organizes the data
 //Combine All the strings together
