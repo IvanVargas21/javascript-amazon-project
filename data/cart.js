@@ -1,5 +1,5 @@
 //choose which variable can be accessed outside of this file.
-export const cart = [{
+export let cart = [{
     productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     quantity: 2,
 },{
@@ -34,4 +34,19 @@ export function addToCart(productId, itemQuantity){
             quantity: Number(itemQuantity),
         });
     }
+  }
+
+  export function removeFromCart(productId){
+    //new array
+    const newCart = [];
+
+    //push to new array all of the cartItem except the product we wanted to delete.
+    cart.forEach((cartItem)=>{
+        if(cartItem.productId !== productId){
+            newCart.push(cartItem);
+        }
+    });
+
+    //assign it back to our array
+    cart =  newCart;
   }

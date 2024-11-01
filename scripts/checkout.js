@@ -1,9 +1,10 @@
 //Save the data
 //Generate the HTML
 //Make it interactive
-import {cart}  from '../data/cart.js';
+import {cart, removeFromCart}  from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
+
 
 let cartSummaryHTML = '';
 cart.forEach((cartItem)=>{
@@ -42,7 +43,7 @@ cart.forEach((cartItem)=>{
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary">
+                  <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
                 </div>
@@ -101,3 +102,14 @@ console.log(cartSummaryHTML);
 
 //get the div element where we are going to store the generated HTML for cartItem Info.
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+
+//get the delete link element
+document.querySelectorAll('.js-delete-link').forEach((link)=>{
+    link.addEventListener('click',() => {
+        //kebab to camel case
+        //access the dataset associated to each delete link
+        const productId = link.dataset.productId;
+        removeFromCart(productId);
+        console.log(cart);
+    });
+});
