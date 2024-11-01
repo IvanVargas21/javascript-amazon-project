@@ -1,13 +1,25 @@
 //choose which variable can be accessed outside of this file.
-export let cart = [{
-    productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-    quantity: 2,
-},{
-    productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
-    quantity: 1,
-}
-];
+export let cart = JSON.parse(localStorage.getItem('cart'));
 
+//if cart == null
+if(!cart){
+    cart = [{
+        productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+        quantity: 2,
+    },{
+        productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+        quantity: 1,
+    }
+    ];
+}
+
+function saveToStorage(){
+    //Has 2 paramete
+    //The name of whatever we want to save
+    //Data we want to save
+    //localStorage only accepts 'string'
+    localStorage.setItem('cart', JSON.stringify(cart))
+}
 /*
   * check if the product is already in the cart
   * if it is in the cart, increase the quantity
@@ -34,6 +46,8 @@ export function addToCart(productId, itemQuantity){
             quantity: Number(itemQuantity),
         });
     }
+    //save to localStorage
+    saveToStorage();
   }
 
   export function removeFromCart(productId){
@@ -49,4 +63,7 @@ export function addToCart(productId, itemQuantity){
 
     //assign it back to our array
     cart =  newCart;
+    
+    //save to localStorage
+    saveToStorage();
   }
