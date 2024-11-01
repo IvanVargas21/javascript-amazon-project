@@ -1,5 +1,5 @@
 //Module 
-import {cart} from '../data/cart.js';
+import {cart, addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 //Save the data
 //This is called DATA STRUCTURES - it organizes the data
@@ -62,77 +62,68 @@ products.forEach((product)=>{
 
 document.querySelector('.js-products-grid').innerHTML += productsHTML;
 
+//updates the page rather than updates the cart
+//should stay on this page. 
+function updateCartQuantity(){
+  //Calculate the Quantity
+  let cartQuantity=0;
+  cart.forEach((cartItem)=>{
+      cartQuantity += cartItem.quantity;
+  })
+  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+  console.log(cartQuantity); 
+}
+
+function addToCartMessage(productId, addedMessage, addedMessageTimeouts) {
+  // Add the class to show the message immediately
+  addedMessage.classList.add("added-to-cart-visible");
+
+  // Check if there's a previous timeout for this product and clear it
+  const previousTimeoutId = addedMessageTimeouts[productId];
+  if (previousTimeoutId) {
+    clearTimeout(previousTimeoutId);
+  }
+
+  // Set a new timeout to remove the class after 2 seconds
+  const timeoutId = setTimeout(() => {
+    addedMessage.classList.remove("added-to-cart-visible");
+  }, 2000);
+
+  // Save the new timeout ID for this product
+  addedMessageTimeouts[productId] = timeoutId;
+}
+
 document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
     button.addEventListener('click', ()=>{
+        //Retrieves the productId
         // kebab-case converted into camelCase
         //accesses the custom data-product-id attribute in each button
-
         //Destructuring Applied
         const {productId} = button.dataset;
-        //we'll use productId we retrieved above, it was the productId associated to the buttont that we select.
+        
+        //Retrieves the quantitySelector value.
         const productSelector = document.querySelector(`.js-quantity-selector-${productId}`)
-        //check if the product is already in the cart
-        //if it is in the cart, increase the quantity
-        //if it's not in the cart, add it to the cart.
 
         //retrieves the quantity value from productSelector
         const itemQuantity = productSelector.value;
         console.log(itemQuantity);
-        //the value we get from the the DOM are strings by default
         // console.log(typeof itemQuantity);
-
-        let matchingItem;
-        cart.forEach((item)=>{
-            if(productId === item.productId){
-                matchingItem = item;
-            }
-        });
-
-        if(matchingItem){
-            //matchingItem.quantity = item.quantity (on the cart)
-            matchingItem.quantity += Number(itemQuantity);
-        }else{
-            cart.push({
-                //Since productId is both the property name and the variable name, it can be use shorthand.
-                productId,
-                //convert it to number first
-                quantity: Number(itemQuantity),
-            });
-        }
-            //Calculate the Quantity
-            let cartQuantity=0;
-            cart.forEach((item)=>{
-                cartQuantity += item.quantity;
-            })
-            document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-                    
-            
-            // An object to store timeout IDs for each product
-            const addedMessageTimeouts = {};
-            const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
-            function addToCart(productId) {
-              // Add the class to show the message immediately
-              addedMessage.classList.add("added-to-cart-visible");
-
-              // Check if there's a previous timeout for this product and clear it
-              const previousTimeoutId = addedMessageTimeouts[productId];
-              if (previousTimeoutId) {
-                clearTimeout(previousTimeoutId);
-              }
-
-              // Set a new timeout to remove the class after 2 seconds
-              const timeoutId = setTimeout(() => {
-                addedMessage.classList.remove("added-to-cart-visible");
-              }, 2000);
-
-              // Save the new timeout ID for this product
-              addedMessageTimeouts[productId] = timeoutId;
-            }
-            
-            addToCart();
-            console.log(cartQuantity); 
-            console.log(cart)
-            
+        
+        //Uses Retrieved productId, itemQuantity as parameter for this function
+        //this function was for adding product
+        //checks if product exists, 
+        //if yes, productSelector value will be added to the quantity property of product object.
+        //if no the object will be pushed on cart array.
+        addToCart(productId, itemQuantity);
+       
+        updateCartQuantity();
+                  
+          
+        // An object to store timeout IDs for each product
+        const addedMessageTimeouts = {};
+        //Retrieves the added to cart button associated to selected button
+        const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+        addToCartMessage(productId, addedMessage, addedMessageTimeouts);
 
       })
 })
