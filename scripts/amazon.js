@@ -1,10 +1,11 @@
+//Module 
+import {cart} from '../data/cart.js';
 //Save the data
 //This is called DATA STRUCTURES - it organizes the data
-
-
 //Combine All the strings together
 //Accumulator Pattern
-let productsHTML = ' ';
+let productsHTML ='';
+
 products.forEach((product)=>{
     productsHTML += `
         <div class="product-container">
