@@ -1,5 +1,5 @@
 //Module 
-import {cart, addToCart} from '../data/cart.js';
+import {cart, addToCart, calculateCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 //Save the data
@@ -63,17 +63,22 @@ products.forEach((product)=>{
 
 document.querySelector('.js-products-grid').innerHTML += productsHTML;
 
-//updates the page rather than updates the cart
-//should stay on this page. 
-function updateCartQuantity(){
-  //Calculate the Quantity
-  let cartQuantity=0;
-  cart.forEach((cartItem)=>{
-      cartQuantity += cartItem.quantity;
-  })
-  document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-  console.log(cartQuantity); 
-}
+// //updates the page rather than updates the cart
+// //should stay on this page. 
+// function updateCartQuantity(){
+//   //Calculate the Quantity
+//   let cartQuantity=0;
+//   cart.forEach((cartItem)=>{
+//       cartQuantity += cartItem.quantity;
+//   })
+//   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+//   console.log(cartQuantity); 
+// }
+// //Update immediately the Element that display CartQuantity when the page loads.
+// updateCartQuantity();
+//From Code Above to here: Using Modules
+document.querySelector('.js-cart-quantity').innerHTML = calculateCartQuantity();
+
 
 function addToCartMessage(productId, addedMessage, addedMessageTimeouts) {
   // Add the class to show the message immediately
@@ -117,7 +122,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
         //if no the object will be pushed on cart array.
         addToCart(productId, itemQuantity);
        
-        updateCartQuantity();
+        document.querySelector('.js-cart-quantity').innerHTML=calculateCartQuantity();
                   
           
         // An object to store timeout IDs for each product
@@ -125,7 +130,5 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
         //Retrieves the added to cart button associated to selected button
         const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
         addToCartMessage(productId, addedMessage, addedMessageTimeouts);
-
       })
-})
-
+});
