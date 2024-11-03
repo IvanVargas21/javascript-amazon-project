@@ -15,17 +15,8 @@ import {
   //default export 
   import dayjs  from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
   import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
-  //Hello External Library
-  // hello();
-  //DayJS External library
-  const today = dayjs()
-  const deliveryDate = today.add(7, 'days');
-  
-  
-  console.log(deliveryDate);
-  console.log(deliveryDate.format('dddd,MMMM,D'));
-  
-  
+  import { renderPaymentSummary } from './paymentSummary.js';
+
  export function renderOrderSummary (){
       let cartSummaryHTML = '';
       cart.forEach((cartItem)=>{
@@ -139,11 +130,16 @@ import {
               //access the dataset associated to each delete link
               const productId = deletelink.dataset.productId;
               removeFromCart(productId);
-  
+
               const container = document.querySelector(
                   `.js-cart-item-container-${productId}`
               )
               container.remove();
+
+              //Once we click the delete link
+              //It will update the data using the removeFromCart above
+              //We have to call the renderPaymentSummary, to update the Payment Summary.
+              renderPaymentSummary();
           });
       });
   
@@ -216,6 +212,7 @@ import {
             const {productId, deliveryOptionId} = element.dataset;
             updateDeliveryOption(productId, deliveryOptionId);
             renderOrderSummary();
+            renderPaymentSummary();
           })
         })
   
