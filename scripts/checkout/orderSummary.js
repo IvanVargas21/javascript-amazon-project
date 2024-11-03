@@ -8,13 +8,13 @@ import {
     updateQuantity,
     updateDeliveryOption
   }  from '../../data/cart.js';
-  import {products} from '../../data/products.js';
+  import {products, getProduct} from '../../data/products.js';
   import formatCurrency from '../utils/money.js';
   //name export
   import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
   //default export 
   import dayjs  from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-  import {deliveryOptions} from '../../data/deliveryOptions.js';
+  import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
   //Hello External Library
   // hello();
   //DayJS External library
@@ -32,24 +32,12 @@ import {
           //Retrieve productId from cart array
           const productId = cartItem.productId;
           //stores the product object(products.js) that has the same productId  (cart.js)
-          let matchingProduct;
-          
-          //find on the products[] the one the matches the productId(cart.js)
-          products.forEach((product)=>{
-              if(product.id === productId){
-                  matchingProduct = product;
-              }
-          })
+          const matchingProduct = getProduct(productId);
           
           //get the deliveryOptionId associated to this cartItem
           const deliveryOptionId = cartItem.deliveryOptionId;
           //store the deliveryOption that matches with the that is associate w/ deliveryOptionId.
-          let deliveryOption;
-          deliveryOptions.forEach((option)=>{
-            if( option.id === deliveryOptionId ){
-              deliveryOption = option;
-            }
-          })
+          const deliveryOption = getDeliveryOption(deliveryOptionId);
   
           //GetCurrent Date
           const today = dayjs();

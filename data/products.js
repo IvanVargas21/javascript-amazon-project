@@ -1,3 +1,16 @@
+export function getProduct(productId){
+    //stores the product object(products.js) that has the same productId  (cart.js)
+    let matchingProduct;
+  
+    //find on the products[] the one the matches the productId(cart.js)
+    products.forEach((product)=>{
+        if(product.id === productId){
+            matchingProduct = product;
+        }
+    })
+    return matchingProduct;
+}
+
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",

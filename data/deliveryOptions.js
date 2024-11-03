@@ -13,3 +13,15 @@ export const deliveryOptions = [
     priceCents: 999
   }
 ]
+
+export function getDeliveryOption(deliveryOptionId){
+  //store the deliveryOption that matches with the that is associate w/ deliveryOptionId.
+  let deliveryOption;
+  deliveryOptions.forEach((option)=>{
+    if( option.id === deliveryOptionId ){
+      deliveryOption = option;
+    }
+  })
+
+  return deliveryOption || deliveryOptions(0);
+}
