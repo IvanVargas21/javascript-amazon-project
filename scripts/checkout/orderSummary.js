@@ -1,7 +1,7 @@
 //Save the data
 //Generate the HTML
 //Make it interactive
-import {
+  import {
     cart, 
     removeFromCart, 
     calculateCartQuantity, 
@@ -14,9 +14,9 @@ import {
   import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
   //default export 
   import dayjs  from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-  import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
+  import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
   import { renderPaymentSummary } from './paymentSummary.js';
-
+  import { renderCheckoutHeader } from './checkOutHeader.js';
  export function renderOrderSummary (){
       let cartSummaryHTML = '';
       cart.forEach((cartItem)=>{
@@ -30,13 +30,13 @@ import {
           //store the deliveryOption that matches with the that is associate w/ deliveryOptionId.
           const deliveryOption = getDeliveryOption(deliveryOptionId);
   
-          //GetCurrent Date
-          const today = dayjs();
-          //Add the deliveryDays associated to each deliveryOption
-          const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-          //Change Format to Day(Monday-Sunday), Month, Day(1-31)
-          const dateString = deliveryDate.format('dddd,MMMM,D');
-  
+          // //GetCurrent Date
+          // const today = dayjs();
+          // //Add the deliveryDays associated to each deliveryOption
+          // const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+          // //Change Format to Day(Monday-Sunday), Month, Day(1-31)
+          // const dateString = deliveryDate.format('dddd,MMMM,D');
+          const dateString = calculateDeliveryDate(deliveryOption);
           cartSummaryHTML += `
               <div class="cart-item-container 
               js-cart-item-container-${matchingProduct.id}">
@@ -90,13 +90,14 @@ import {
       function deliveryOptionsHTML(matchingProduct, cartItem){
         let html = '';
         deliveryOptions.forEach((deliveryOption)=>{
-          //GetCurrent Date
-          const today = dayjs();
-          //Add the deliveryDays associated to each deliveryOption
-          const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-          //Change Format to Day(Monday-Sunday), Month, Day(1-31)
-          const dateString = deliveryDate.format('dddd,MMMM,D');
-  
+          // //GetCurrent Date
+          // const today = dayjs();
+          // //Add the deliveryDays associated to each deliveryOption
+          // const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+          // //Change Format to Day(Monday-Sunday), Month, Day(1-31)
+          // const dateString = deliveryDate.format('dddd,MMMM,D');
+          
+          const dateString = calculateDeliveryDate(deliveryOption);
           const priceString = deliveryOption.priceCents === 0? 'Free' : `$${formatCurrency(deliveryOption.priceCents)} - `
           const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
           html+=`
@@ -138,8 +139,11 @@ import {
 
               //Once we click the delete link
               //It will update the data using the removeFromCart above
-              //We have to call the renderPaymentSummary, to update the Payment Summary.
+              //We have to call the renderPaymentSummary, to update the Payment Summary and OrderSummary.
+              renderCheckoutHeader();
+              renderOrderSummary();
               renderPaymentSummary();
+              
           });
       });
   
@@ -154,7 +158,9 @@ import {
       // }
       // updateCartQuantity(cart);
       //From code above to here: Using Modules
-      document.querySelector('.js-checkout-quantity').innerHTML = calculateCartQuantity();
+
+      //there was already checkOutHeader that renders the header together the cartQuantity
+      // document.querySelector('.js-checkout-quantity').innerHTML = calculateCartQuantity();
   
       //adds event listener to each update links from the page
       document.querySelectorAll('.update-quantity-link').forEach((updatelink)=>{
@@ -166,6 +172,7 @@ import {
           //hides the quantity-label update-quantity-link
           //displays the quantity input and save-quantity-link
           container.classList.add("is-editing-quantity");
+          
         })
       })
   
@@ -203,6 +210,7 @@ import {
             quantityLabel.innerHTML = newQuantity;
             //updtes the header at the top.
             document.querySelector('.js-checkout-quantity').innerHTML = calculateCartQuantity();
+            renderPaymentSummary();
           })
         })
   
