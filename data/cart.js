@@ -1,5 +1,11 @@
 //choose which variable can be accessed outside of this file.
-export let cart = JSON.parse(localStorage.getItem('cart'));
+//obj
+export let cart;
+
+loadFromStorage();
+
+export function loadFromStorage (){
+   cart = JSON.parse(localStorage.getItem('cart'));
 
 //if cart == null
 if(!cart){
@@ -13,6 +19,7 @@ if(!cart){
         deliveryOptionId: '2'
     }
     ];
+}
 }
 
 //To store the cart object on localStorage
@@ -39,16 +46,16 @@ export function addToCart(productId, itemQuantity){
     if(matchingItem){
         //the value we get from the the DOM are strings by default
         //matchingItem.quantity = item.quantity (on the cart)
-        matchingItem.quantity += Number(itemQuantity);
+        matchingItem.quantity = 2;//+= Number(itemQuantity);
     }else{
         cart.push({
             //Since productId is both the property name and the variable name, it can be use shorthand.
             productId,
             //the value we get from the the DOM are strings by default
             //convert it to number first
-            quantity: Number(itemQuantity),
+            quantity:1 //Number(itemQuantity)
             //for new product, initial deliveryOption is 1
-            deliveryOptionId: '1'
+            ,deliveryOptionId: '1'
         });
     }
     //save to localStorage
