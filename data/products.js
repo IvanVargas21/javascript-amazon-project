@@ -31,7 +31,30 @@ class Product{
   getPrice(){
     return `$${formatCurrency(this.priceCents)}`
   }
+  extraInfoHTML(){
+    return '';
+   }
 }
+//Inherits all the properties from the product
+class Clothing extends Product{
+  //inherit class +add properties/methods
+ sizeChartLink;
+ 
+ constructor(productDetails){
+  //calls the constructor of the parent class
+  super(productDetails)
+  this.sizeChartLink = productDetails.sizeChartLink;
+ }
+ extraInfoHTML (){
+  //call the method inside the constructor
+  // super.extraInfoHTML()
+  return `
+  <a href="${this.sizeChartLink }" target= "_blank">Size chart</a>
+  `;
+ }
+}
+
+
 const product1 = new Product(  
   {
   id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -745,6 +768,9 @@ export const products = [
     ]
   }
 ].map((productDetails)=>{
+  if(productDetails.type === 'clothing'){
+    return new Clothing(productDetails)
+  }
   //map instead of forEach, ,map returns new array based on the resut of the function for each element.
   //returns an array of classes
   //will map and create and Instances of the class Product
