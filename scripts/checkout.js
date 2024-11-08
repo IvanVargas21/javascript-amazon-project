@@ -1,7 +1,7 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
 import { renderCheckoutHeader } from "./checkout/checkOutHeader.js";
-import '../data/cart-class.js';
+//import '../data/cart-class.js';
 import isSatSun from "./checkSatSun.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 renderCheckoutHeader();
