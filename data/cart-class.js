@@ -1,16 +1,16 @@
 class Cart{
-    cartItems;
-    localStorageKey;
+     
+    #localStorageKey;
 
     constructor(localStorageKey){
-        this.localStorageKey = localStorageKey; 
-        this.loadFromStorage();
+        this.#localStorageKey = localStorageKey; 
+        this.#loadFromStorage();
     }
-    
-    loadFromStorage(){
+
+    #loadFromStorage(){
         //cart-oop avoid affecting our original cart'
         //referring to the object that this class will be used
-        this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
           //if cart == null
         if(!this.cartItems){
           this.cartItems = [{
@@ -30,7 +30,7 @@ class Cart{
         //The name of whatever we want to save
         //Data we want to save
         //localStorage only accepts 'string'
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems))
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems))
     }
       /*
         * check if the product is already in the cart
@@ -124,3 +124,4 @@ console.log(businessCart);
 
 console.log('Is instance of class Cart?')
 console.log(businessCart instanceof Cart);
+
