@@ -73,6 +73,24 @@ const product1 = new Product(
   }
 );
 // console.log(product1)
+/*
+//undefined
+const date = new Date()
+console.log(date)
+console.log(date.toLocaleTimeString())
+
+console.log(this)
+const object2 = {
+  a:2,
+  b:this.a,
+}
+
+//undefined
+function logThis(){
+  console.log(this);
+}
+console.log(logThis())
+*/
 
 export const products = [
   {
