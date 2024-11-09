@@ -1,4 +1,4 @@
-  import formatCurrency from "../scripts/utils/money.js";
+import formatCurrency from "../scripts/utils/money.js";
 export function getProduct(productId){
     //stores the product object(products.js) that has the same productId  (cart.js)
     let matchingProduct;
@@ -92,6 +92,7 @@ function logThis(){
 console.log(logThis())
 */
 
+/*
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -794,5 +795,33 @@ export const products = [
   //will map and create and Instances of the class Product
   return new Product(productDetails)
 });
+*/
+export let products = [];
 
+export function loadProducts(fun){
+  const xhr = new XMLHttpRequest();
+  //function, after the response has loaded.
+  xhr.addEventListener('load', ()=>{
+    products = JSON.parse(xhr.response).map((productDetails)=>{
+      if(productDetails.type === 'clothing'){
+        return new Clothing(productDetails)
+      }
+      //map instead of forEach, ,map returns new array based on the resut of the function for each element.
+      //returns an array of classes
+      //will map and create and Instances of the class Product
+      return new Product(productDetails)
+    });
+    //indicates that we get a response
+    console.log('load products') 
 
+    //after create products[] at the top
+    //call the renderProductsGrid
+    fun();
+  })
+  xhr.open('GET', 'https://supersimplebackend.dev/products');
+  //XML Http Request
+  //asynchronous
+  xhr.send();
+}
+
+loadProducts();
