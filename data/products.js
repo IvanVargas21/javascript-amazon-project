@@ -798,6 +798,46 @@ export const products = [
 */
 export let products = [];
 
+//Uses a Promise
+export function loadProductsFetch(){
+  //makes an HTTP request
+  //when we use fetch it will create a Promise
+  //Default, fetch makes a GET request.
+  //it will save the response in the '.then()' parameter
+  const promise = fetch(
+    'https://supersimplebackend.dev/products'
+  ).then((response)=>{
+    //gives the json/data attached to the response
+    //asynch
+    return response.json()
+    //it will save the response in the '.then()' parameter
+    //returns an array of objects/products
+  }).then((productsData)=>{
+    products = productsData.map((productDetails)=>{
+      if(productDetails.type === 'clothing'){
+      return new Clothing(productDetails)
+      }
+      //map instead of forEach, ,map returns new array based on the resut of the function for each element.
+      //returns an array of classes
+      //will map and create and Instances of the class Product
+      return new Product(productDetails)
+    });
+    //indicates that we get a response
+    console.log('load products') 
+
+    //after create products[] at the top
+    //call the renderProductsGrid
+  });
+  return promise;
+}
+/*
+loadProductsFetch().then(()=>{
+  console.log('next step')
+});
+*/
+
+
+//Uses Callback
 export function loadProducts(fun){
   const xhr = new XMLHttpRequest();
 
