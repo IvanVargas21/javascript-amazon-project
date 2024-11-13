@@ -29,15 +29,12 @@ async function loadPage(){
   } catch(error){
     console.log('Unexpected error. Please try again later.');
   }
-
   renderCheckoutHeader();
   renderOrderSummary();
   renderPaymentSummary();
-
 }
 //passes return value in then parameter
-loadPage()
-
+loadPage();
 /*
 //Converts callback to promises
 Promise.all([
