@@ -800,6 +800,7 @@ export let products = [];
 
 export function loadProducts(fun){
   const xhr = new XMLHttpRequest();
+
   //function, after the response has loaded.
   xhr.addEventListener('load', ()=>{
     products = JSON.parse(xhr.response).map((productDetails)=>{
@@ -817,7 +818,8 @@ export function loadProducts(fun){
     //after create products[] at the top
     //call the renderProductsGrid
     fun();
-  })
+  });
+  
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   //XML Http Request
   //asynchronous

@@ -112,3 +112,22 @@ export function addToCart(productId, itemQuantity){
     matchingItem.deliveryOptionId = deliveryOptionId;
     saveToStorage();
   }
+
+  //loads the Cart from the backend
+  export function loadCart(fun){
+    const xhr = new XMLHttpRequest();
+  
+    //function, after the response has loaded.
+    xhr.addEventListener('load', ()=>{
+        console.log(xhr.response);
+  
+      //after create products[] at the top
+      //call the renderProductsGrid
+      fun();
+    });
+    
+    xhr.open('GET', 'https://supersimplebackend.dev/cart');
+    //XML Http Request
+    //asynchronous
+    xhr.send();
+  }
