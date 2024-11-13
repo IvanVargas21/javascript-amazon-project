@@ -8,6 +8,25 @@ import isSatSun from "./checkSatSun.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { loadCart } from "../data/cart.js";
 
+//returns a promise
+async function loadPage(){
+  //waits for this line to finish, before going to the next line.
+  await loadProductsFetch( );
+
+  const value = await new Promise((resolve)=>{
+    loadCart(()=>{
+        resolve('value3');
+    });
+  })
+  renderCheckoutHeader();
+  renderOrderSummary();
+  renderPaymentSummary();
+
+}
+//passes return value in then parameter
+loadPage()
+
+/*
 //Converts callback to promises
 Promise.all([
   //returns a promises which we can use in Promise.all()
@@ -26,6 +45,7 @@ Promise.all([
   renderPaymentSummary();
 }
 )
+*/
 
 /*
 //when created, runs the function immediately
